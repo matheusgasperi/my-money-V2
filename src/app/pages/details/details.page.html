@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Transação</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-select [(ngModel)]="tran.type" placeholder="Selecionar tipo">
+      <ion-select-option value="ganho">Ganho +</ion-select-option>
+      <ion-select-option value="gasto">Gasto -</ion-select-option>
+    </ion-select>
+    <ion-item>
+      <ion-input type="text" [(ngModel)]="tran.title" placeholder="Título"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" [(ngModel)]="tran.description" placeholder="Descrição"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" [(ngModel)]="tran.amount" placeholder="Valor"></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button (click)="saveTran()" expand="block">
+      Salvar transação
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

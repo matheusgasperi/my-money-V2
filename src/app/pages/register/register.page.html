@@ -1,0 +1,56 @@
+<ion-content>
+  <div id="header">
+    <div id="app-bar">
+      <ion-icon name="arrow-back" routerLink-="/welcome"></ion-icon>
+      <div id="logo">
+        <img src="assets/iconM.png" alt="">
+      </div>
+      <div></div>
+    </div>
+
+    <h1>Cadastro</h1>
+    <p>Cadastre-se e comece gerenciar seus gastos</p>
+  </div>
+
+  <div class="wrapper">
+    <ion-card class="form-wrapper">
+      <ion-card-content>
+        <ion-item>
+          <ion-icon name="person"></ion-icon>
+          <ion-input type="text" placeholder="Nome"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="mail"></ion-icon>
+          <ion-input type="text" placeholder="E-mail"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="lock-closed"></ion-icon>
+          <ion-input type="password" placeholder="Senha"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="lock-closed"></ion-icon>
+          <ion-input type="password" placeholder="Confirmar senha"></ion-input>
+        </ion-item>
+        <ion-button expand="block" >Entrar</ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="line-text">
+      <span class="lines"></span>
+      <span class="text">Ou conecte usando</span>
+    </div>
+
+    <ion-card class="social-wrapper">
+      <ion-card-content>
+        <div class="socials">
+          <ion-button class="btn-fb">
+            <ion-icon name="logo-facebook"></ion-icon>
+          </ion-button>
+          <ion-button class="btn-go">
+            <ion-icon name="logo-google"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

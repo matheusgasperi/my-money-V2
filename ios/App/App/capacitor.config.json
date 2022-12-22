@@ -1,0 +1,6 @@
+{
+	"appId": "com.msdg.mymoneyAPP",
+	"appName": "My Money App",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
