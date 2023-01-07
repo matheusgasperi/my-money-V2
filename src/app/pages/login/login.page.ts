@@ -71,54 +71,6 @@ export class LoginPage implements OnInit {
   }
 
 
- async register() {
-
-  if(this.name && this.email && this.password)
-  {
-    const loading = await this.loadingCrtl.create({
-      message: 'Carregando, Por favor Aguarde',
-      spinner: 'crescent',
-      showBackdrop: true
-    });
-
-    loading.present();
-
-    this.afauth.createUserWithEmailAndPassword(this.email, this.password).then((data)=> {
-
-      this.afs.collection('usuarios').doc(data.user.uid).set({
-        'userId': data.user.uid,
-        'name': this.name,
-        'email': this.email,
-        'createdAt': Date.now()
-      });
-
-    })
-    .then(()=> {
-      loading.dismiss();
-      this.toast('Registrado com sucesso!', 'success');
-      this.router.navigate(['/teste'])
-
-    })
-    .catch((error) => {
-      loading.dismiss();
-      this.toast(error.message, 'danger');
-    })
-  } else {
-    console.log('Por favor preencha os dados');
-
-  }
-
-} //fim registro
-
-checkPassword() {
-  if(this.password == this.confirmPassword)
-  {
-    this.passwordMatch = true;
-  } else {
-    this.passwordMatch = false;
-  }
-}
-
 async toast(message, status)
 {
   const toast = await this.toastCrtl.create({

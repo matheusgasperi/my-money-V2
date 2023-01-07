@@ -60,30 +60,12 @@ export class TestePage implements OnInit {
   }
 
   async deleteTran(id: string) {
-    const alert = this.alertCtrl.create({
-      header: 'Confirm!',
-      message: 'Tem certeza que deseja deletar?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: (blah) => {
-            console.log('cancel');
-          }
-        }, {
-          text: 'Okay',
-          handler: () => {
-            this.tranService.deleteTran(id);
-          }
-        }
-      ]
-    });
 
-    //try {
-      //await this.tranService.deleteTran(id);
-    //} catch (error) {
-     // this.presentToast('Erro ao tentar deletar');
-    //}
+    try {
+      await this.tranService.deleteTran(id);
+    } catch (error) {
+      this.presentToast('Erro ao tentar deletar');
+    }
   }
 
   async presentToast(message: string) {
