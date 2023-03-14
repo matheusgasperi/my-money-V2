@@ -1,13 +1,10 @@
-/* eslint-disable @angular-eslint/use-lifecycle-interface */
-/* eslint-disable @typescript-eslint/member-ordering */
-
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
-import { TranService } from 'src/app/services/tran.service';
+import { Router } from '@angular/router';
 import { Tran } from 'src/app/interfaces/tran';
-import { Subscription } from 'rxjs';
-import { User } from 'src/app/interfaces/user';
+import { AuthService } from 'src/app/services/auth.service';
+import { TransactionService } from 'src/app/services/tran.service';
+import { Observable } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-teste',
@@ -15,64 +12,48 @@ import { User } from 'src/app/interfaces/user';
   styleUrls: ['./teste.page.scss'],
 })
 export class TestePage implements OnInit {
-
-  private loading: any;
-  public trans = new Array<Tran>();
-  private transSubscription: Subscription;
-
-
+  userName: string;
+  transactions$: Observable<Tran[]>;
+  userId: string;
 
   constructor(
-
     private authService: AuthService,
-    private loadingCtrl: LoadingController,
-    private tranService: TranService,
-    private toastCtrl: ToastController,
-    private alertCtrl: AlertController
-  ) {
+    private transactionService: TransactionService,
+    private router: Router,
+    private afAuth: AngularFireAuth
+  ) { }
 
-    this.transSubscription = this.tranService.getTrans().subscribe(data => {
-      this.trans = data;
+  async ngOnInit() {
+    // Obtém o ID do usuário atual
+    this.userId = await this.authService.getUserId();
+
+    // Obtém o nome do usuário
+    this.transactionService.getUserName(this.userId).then((userName) => {
+      this.userName = userName;
+    }).catch((error) => {
+      console.log(error);
     });
+
+    // Obtém as transações do usuário
+    this.transactions$ = this.transactionService.getTransactions(this.userId);
   }
 
-  ngOnInit() { }
-
-  ngOnDestroy() {
-    this.transSubscription.unsubscribe();
+  // Redireciona para a página de adição de transações
+  addTransaction() {
+    this.router.navigate(['/add-transaction']);
   }
 
-  async logout() {
-    await this.presentLoading();
-
-    try {
-      await this.authService.logout();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      this.loading.dismiss();
-    }
+  // Redireciona para a página de edição de transações
+  editTransaction(transactionId: string) {
+    this.router.navigate(['/edit-transaction', transactionId]);
   }
 
-  async presentLoading() {
-    this.loading = await this.loadingCtrl.create({ message: 'Aguarde...' });
-    return this.loading.present();
+  // Deleta uma transação
+  deleteTransaction(transactionId: string) {
+    this.transactionService.deleteTransaction(transactionId);
   }
 
-  async deleteTran(id: string) {
-
-    try {
-      await this.tranService.deleteTran(id);
-    } catch (error) {
-      this.presentToast('Erro ao tentar deletar');
-    }
-  }
-
-  async presentToast(message: string) {
-    const toast = await this.toastCtrl.create({ message, duration: 2000 });
-    toast.present();
+  async logout(): Promise<void> {
+    return this.afAuth.signOut();
   }
 }
-
-
-

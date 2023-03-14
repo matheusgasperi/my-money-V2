@@ -48,13 +48,18 @@ export class LoginPage implements OnInit {
 
 
 
-  async login() {
-    if(this.email && this.password)
-   {
+    async login() {
+      try {
+        await this.authService.login(this.email, this.password);
+        this.router.navigate(['/teste']);
+      } catch (error) {
+        console.error(error);
+      }
+
      const loading = await this.loadingCrtl.create({
        message: 'Logando..',
        spinner: 'crescent',
-       showBackdrop: true
+       showBackdrop: true,
      });
 
      loading.present();
@@ -67,7 +72,7 @@ export class LoginPage implements OnInit {
        loading.dismiss();
        this.toast(error.message, 'danger');
      })
-   }
+
   }
 
 

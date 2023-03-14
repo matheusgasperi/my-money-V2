@@ -1,86 +1,46 @@
-/* eslint-disable object-shorthand */
-/* eslint-disable curly */
-/* eslint-disable @typescript-eslint/semi */
-/* eslint-disable arrow-body-style */
-import { getAuth, createUserWithEmailAndPassword, UserInfo } from 'firebase/auth';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { UserCredential } from 'firebase/auth';
+import { Observable } from 'rxjs';
 import { User } from '../interfaces/user';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { switchMap} from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
-import { Router } from '@angular/router';
-import { LoadingController, ToastController } from '@ionic/angular';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  user$: Observable<User>;
-  user: User;
+  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) { }
 
-  constructor(
-    private afauth: AngularFireAuth,
-    private afs: AngularFirestore,
-    private router: Router,
-    private loadingCrtl: LoadingController,
-    private toastCrtl: ToastController,)
-    {
+  // Registro de usuário
+  async register(user: User, password: string): Promise<void> {
+    const credential = await this.afAuth.createUserWithEmailAndPassword(user.email, password);
+    const uid = credential.user.uid;
+    const userData = { uid, email: user.email, name: user.name };
+    return this.afs.doc(`users/${uid}`).set(userData);
+  }
 
-      this.user$ = this.afauth.authState.pipe(
-         switchMap(user=>
-          {
-             if(user)
-             {
-               this.afs.doc(`usuarios/${user.uid}`).valueChanges();
-             } else {
-               return of(null);
-             }
-          })
-      )
+  // Login de usuário
+  async login(email: string, password: string): Promise<void> {
+    await this.afAuth.signInWithEmailAndPassword(email, password);
+  }
+
+  async getUserId(): Promise<string> {
+    const currentUser = await this.afAuth.currentUser;
+    if (!currentUser) {
+      throw new Error('Usuario nao autenticado');
     }
-    async login(email, password) {
-
-     const loading = await this.loadingCrtl.create({
-       message: 'Autenticando..',
-       spinner: 'crescent',
-       showBackdrop: true
-     })
-
-     loading.present();
-
-    this.afauth.signInWithEmailAndPassword(email, password).then((data)=> {
-      if(!data.user)
-       {
-         loading.dismiss();
-       } else {
-         loading.dismiss();
-       }
-   });
+    return currentUser.uid;
+  }
+  // Logout de usuário
+  async logout(): Promise<void> {
+    return this.afAuth.signOut();
   }
 
-  async toast(message, status) {
-    const toast = await this.toastCrtl.create({
-      message: message,
-      position: 'top',
-      color: status,
-      duration: 2500
-    })
-
-    toast.present();
-  } //fim do toast
-
-
-  logout() {
-   this.afauth.signOut().then(()=> {
-     this.router.navigate(['login']);
-   });
+  // Retorna o usuário atualmente autenticado
+  getCurrentUser() {
+    return this.afAuth.authState;
   }
-
-  getAuth() {
-    return this.afauth;
-  }
-
 }
+
+

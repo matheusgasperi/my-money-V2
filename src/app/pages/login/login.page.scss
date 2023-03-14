@@ -1,6 +1,22 @@
 ion-content{
   --background:#d1d0d8;
 
+  #logo {
+    margin-top: 25px;
+    width: 34px;
+    height: 34px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    align-self: center;
+
+    img {
+      width: 100%;
+    }
+  }
+
 #header {
   height: 33%;
   background: #7972e6;
@@ -21,21 +37,7 @@ ion-content{
       margin-left: -5px;
     }
 
-    #logo {
-      margin-top: 25px;
-      width: 34px;
-      height: 34px;
-      background-color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 10px;
-      align-self: center;
 
-      img {
-        width: 100%;
-      }
-    }
   }
 
   h1 {

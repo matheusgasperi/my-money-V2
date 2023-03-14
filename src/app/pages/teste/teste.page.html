@@ -12,14 +12,13 @@
 
   <ion-list>
     <div class="icone">
-      <ion-img src="assets/avat.png"></ion-img>
-      <h1>Usuário</h1>
+      <h1>{{userName}}</h1>
     </div>
     <div class="main-div ion-padding">
      <h1 class="ion-padding">Transações Realizadas</h1>
      <div class="lista">
 
-      <ion-list *ngIf="!trans.length">
+      <ion-list *ngIf="transactions$ as transactions">
         <ion-item *ngFor="let item of [0, 1, 2]">
 
           <ion-label>
@@ -35,20 +34,20 @@
           </ion-label>
         </ion-item>
       </ion-list>
-    <ion-item-sliding *ngFor="let tran of trans">
-      <ion-item button [routerLink]="['/details', tran.id]">
+    <ion-item-sliding *ngFor="let transaction of transactions$ | async">
+      <ion-item button [routerLink]="['/details', transaction.id]">
 
         <ion-label>
-          {{ tran.title }}
-          <p [ngClass]="{gasto: tran.type === 'gasto', ganho: tran.type === 'ganho'}">{{tran.description}}</p>
-          <p>{{ tran.createdAt | date: 'short' }}</p>
+          {{ transaction.title }}
+          <p [ngClass]="{gasto: transaction.type === 'gasto', ganho: transaction.type === 'ganho'}">{{transaction.description}}</p>
+          <p>{{ transaction.createdAt | date: 'short' }}</p>
         </ion-label>
 
-        <p class="valor" [ngClass]="{gasto: tran.type === 'gasto', ganho: tran.type === 'ganho'}">R${{tran.amount}}</p>
+        <p class="valor" [ngClass]="{gasto: transaction.type === 'gasto', ganho: transaction.type === 'ganho'}">R${{transaction.amount}}</p>
       </ion-item>
 
       <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="deleteTran(tran.id)">
+        <ion-item-option color="danger" >
           <ion-icon slot="top" name="trash"></ion-icon>
           Excluir
         </ion-item-option>
@@ -59,7 +58,7 @@
  </div>
 
  <ion-item>
-  <ion-button (click)="logout()" color="danger" expand="block">
+  <ion-button color="danger" expand="block" (click)="logout()" >
   <ion-icon name="exit-outline"></ion-icon>Sair
 </ion-button>
 </ion-item>
@@ -67,7 +66,7 @@
  <ion-fab-button color="primary">
   <ion-icon name="add-outline" routerLink="/details"></ion-icon>
 </ion-fab-button>
-  </ion-list>
+   </ion-list>
 
 </ion-content>
 

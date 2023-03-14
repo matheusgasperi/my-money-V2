@@ -22,89 +22,25 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
 })
-export class RegisterPage implements OnInit {
+export class RegisterPage {
 
   name: string;
   email: string;
   password: string;
   confirmPassword: string;
-
   passwordMatch: boolean;
 
-
-  constructor(
-    private afauth: AngularFireAuth,
-    private afs: AngularFirestore,
-    private loadingCrtl: LoadingController,
-    private toastCrtl: ToastController,
-    private authService: AuthService,
-    private router: Router,
-    private activeRoute: ActivatedRoute,
-  ) {
-
-  }
-
-  ngOnInit() {
-  }
+  constructor(private authService: AuthService,
+     private router: Router
+     ) {}
 
   async register() {
+    const user: User = { name: this.name, email: this.email };
+    await this.authService.register(user, this.password);
+    await this.router.navigate(['/teste']);
 
-    if(this.name && this.email && this.password)
-    {
-      const loading = await this.loadingCrtl.create({
-        message: 'Carregando, Por favor Aguarde',
-        spinner: 'crescent',
-        showBackdrop: true
-      });
-
-      loading.present();
-
-      this.afauth.createUserWithEmailAndPassword(this.email, this.password).then((data)=> {
-
-        this.afs.collection('usuarios').doc(data.user.uid).set({
-          'userId': data.user.uid,
-          'name': this.name,
-          'email': this.email,
-          'createdAt': Date.now()
-        });
-
-      })
-      .then(()=> {
-        loading.dismiss();
-        this.toast('Registrado com sucesso!', 'success');
-        this.router.navigate(['/teste'])
-
-      })
-      .catch((error) => {
-        loading.dismiss();
-        this.toast(error.message, 'danger');
-      })
-    } else {
-      console.log('Por favor preencha os dados');
-
-    }
-
-  } //fim registro
-
+}
   checkPassword() {
-    if(this.password == this.confirmPassword)
-    {
-      this.passwordMatch = true;
-    } else {
-      this.passwordMatch = false;
-    }
+    this.passwordMatch = this.password === this.confirmPassword;
   }
-
-  async toast(message, status)
-  {
-    const toast = await this.toastCrtl.create({
-      message: message,
-      position: 'top',
-      color: status,
-      duration: 2500
-    })
-
-    toast.present();
-  }
-  }
-
+}

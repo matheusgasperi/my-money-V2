@@ -1,14 +1,14 @@
 /* eslint-disable curly */
-/* eslint-disable @typescript-eslint/semi */
 import { Injectable } from '@angular/core';
-import { CanActivate, Router,} from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import {  } from 'rxjs/operators'
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+
   constructor(
     private authService: AuthService,
     private router: Router
@@ -16,11 +16,12 @@ export class AuthGuard implements CanActivate {
 
   canActivate(): Promise<boolean> {
     return new Promise(resolve => {
-      this.authService.getAuth().onAuthStateChanged(user => {
+      this.authService.getCurrentUser().pipe(
+        take(1)
+      ).subscribe(user => {
         if (!user) this.router.navigate(['login']);
-
         resolve(user ? true : false);
-      })
-    })
+      });
+    });
   }
 }
