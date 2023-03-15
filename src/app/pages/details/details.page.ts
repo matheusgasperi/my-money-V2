@@ -1,13 +1,9 @@
-/* eslint-disable @angular-eslint/use-lifecycle-interface */
-/* eslint-disable curly */
-import { Subscription } from 'rxjs';
-/* eslint-disable @typescript-eslint/dot-notation */
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { Tran } from 'src/app/interfaces/tran';
 import { TransactionService } from 'src/app/services/tran.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
-
 
 @Component({
   selector: 'app-details',
@@ -15,40 +11,73 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./details.page.scss'],
 })
 export class DetailsPage implements OnInit {
-  tran: Tran = {
-    id: '',
-    type: '',
-    title: '',
-    description: '',
-    amount: null,
-    userId: '',
-    createdAt: Date.now(),
-  };
+  transactionForm: FormGroup;
+  transactionId: string;
+  isEditMode = false;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private tranService: TransactionService
+    private formBuilder: FormBuilder,
+    private transactionService: TransactionService,
+    private navController: NavController,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    // Obter o ID da transação a partir dos parâmetros da URL
-    const id = this.route.snapshot.params['id'];
-    if (id) {
-      this.tranService.getTransactions(id).subscribe(tran => {
-        this.tran = tran[0];
-      });
+    this.transactionId = this.activatedRoute.snapshot.paramMap.get('id');
+    if (this.transactionId) {
+      this.isEditMode = true;
+      this.loadTransactions();
+    } else {
+      this.createTransactionForm();
     }
   }
 
+  createTransactionForm() {
+    this.transactionForm = this.formBuilder.group({
+      description: ['', Validators.required],
+      type: ['expense', Validators.required],
+      amount: [0, Validators.required],
+      date: [new Date().toISOString(), Validators.required]
+    });
+  }
+
   async addTransaction() {
-    console.log('Adicionando transação');
+    const newTransaction = {
+      ...this.transactionForm.value,
+      date: new Date(this.transactionForm.value.date).getTime(),
+    };
     try {
-      const userId = await this.tranService.getUserId();
-      this.tran.userId = userId;
-      await this.tranService.addTransaction(this.tran);
-      console.log('Transação adicionada com sucesso');
-      this.router.navigateByUrl('/teste');
+      await this.transactionService.createTransaction(newTransaction);
+      this.navController.navigateBack('/teste');
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+ async loadTransactions(): Promise<void> {
+    try {
+      const userId = await this.transactionService.getUserId();
+      const transaction = (await this.transactionService.getTransactions(userId, this.transactionId).toPromise())[0];
+      this.transactionForm.patchValue({
+        description: transaction.description,
+        type: transaction.type,
+        amount: transaction.amount,
+        date: new Date(transaction.createdAt).toISOString(),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async updateTransaction() {
+    const updatedTransaction = {
+      ...this.transactionForm.value,
+      date: new Date(this.transactionForm.value.date).getTime(),
+      id: this.transactionId,
+    };
+    try {
+      await this.transactionService.updateTransaction(updatedTransaction);
+      this.navController.navigateBack('/teste');
     } catch (error) {
       console.error(error);
     }

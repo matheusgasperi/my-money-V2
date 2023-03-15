@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
+import { FormBuilder, FormsModule , ReactiveFormsModule} from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { DetailsPageRoutingModule } from './details-routing.module';
@@ -13,8 +12,10 @@ import { DetailsPage } from './details.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    DetailsPageRoutingModule
+    DetailsPageRoutingModule,
+    ReactiveFormsModule
   ],
-  declarations: [DetailsPage]
+  declarations: [DetailsPage],
+  providers: [FormBuilder]
 })
 export class DetailsPageModule {}

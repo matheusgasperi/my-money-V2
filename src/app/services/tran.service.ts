@@ -22,6 +22,7 @@ export class TransactionService {
       }
     });
   }
+
   async getUserName(userId: string): Promise<string> {
     const userDoc = await this.afs.doc<User>(`users/${userId}`).get().toPromise();
     if (!userDoc.exists) {
@@ -32,11 +33,12 @@ export class TransactionService {
   }
 
   getTransactions(userId: string): Observable<Tran[]> {
-    return this.afs.collection<Tran>('transactions', ref => ref.where('userId', '==', userId)).valueChanges();
+    return this.afs.collection<Tran>(`users/${userId}/transactions`).valueChanges({ idField: 'id' });
   }
 
-  addTransaction(transaction: Tran): Promise<DocumentReference> {
-    return this.transactionsCollection.add(transaction);
+  async createTransaction(transaction: Tran): Promise<DocumentReference> {
+    const user = await this.authService.getCurrentUser().toPromise();
+    return this.afs.collection(`users/${user.uid}/transactions`).add(transaction);
   }
 
   editTransaction(transaction: Tran): Promise<void> {
@@ -47,7 +49,6 @@ export class TransactionService {
     return this.transactionsCollection.doc(transactionId).delete();
   }
 
-  // Método para obter o ID do usuário atualmente autenticado
   async getUserId(): Promise<string> {
     const user = await this.authService.getCurrentUser().toPromise();
     return user.uid;

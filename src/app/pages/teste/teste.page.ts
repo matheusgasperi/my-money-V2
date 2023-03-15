@@ -15,7 +15,7 @@ export class TestePage implements OnInit {
   userName: string;
   transactions$: Observable<Tran[]>;
   userId: string;
-
+  transactionId: string;
   constructor(
     private authService: AuthService,
     private transactionService: TransactionService,
@@ -35,7 +35,7 @@ export class TestePage implements OnInit {
     });
 
     // Obtém as transações do usuário
-    this.transactions$ = this.transactionService.getTransactions(this.userId);
+    this.transactions$ = this.transactionService.getTransactions(this.userId, this.transactionId);
   }
 
   // Redireciona para a página de adição de transações
