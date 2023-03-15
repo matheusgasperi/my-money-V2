@@ -35,7 +35,7 @@ export class TestePage implements OnInit {
     });
 
     // Obtém as transações do usuário
-    this.transactions$ = this.transactionService.getTransactions(this.userId, this.transactionId);
+    this.transactions$ = this.transactionService.getTransactions(this.userId);
   }
 
   // Redireciona para a página de adição de transações

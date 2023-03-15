@@ -34,6 +34,7 @@ export class DetailsPage implements OnInit {
 
   createTransactionForm() {
     this.transactionForm = this.formBuilder.group({
+      title: ['', Validators.required],
       description: ['', Validators.required],
       type: ['expense', Validators.required],
       amount: [0, Validators.required],
@@ -57,8 +58,9 @@ export class DetailsPage implements OnInit {
  async loadTransactions(): Promise<void> {
     try {
       const userId = await this.transactionService.getUserId();
-      const transaction = (await this.transactionService.getTransactions(userId, this.transactionId).toPromise())[0];
+      const transaction = (await this.transactionService.getTransactions(userId).toPromise())[0];
       this.transactionForm.patchValue({
+        title: transaction.title,
         description: transaction.description,
         type: transaction.type,
         amount: transaction.amount,
@@ -76,10 +78,11 @@ export class DetailsPage implements OnInit {
       id: this.transactionId,
     };
     try {
-      await this.transactionService.updateTransaction(updatedTransaction);
+      await this.transactionService.editTransaction(updatedTransaction);
       this.navController.navigateBack('/teste');
     } catch (error) {
       console.error(error);
     }
   }
+
 }

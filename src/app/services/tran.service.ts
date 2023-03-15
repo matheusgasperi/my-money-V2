@@ -11,8 +11,10 @@ import { User } from '../interfaces/user';
   providedIn: 'root'
 })
 export class TransactionService {
+  transactionId: string;
   private transactionsCollection: AngularFirestoreCollection<Tran>;
   private userId: string;
+
 
   constructor(private afs: AngularFirestore, private authService: AuthService) {
     this.authService.getCurrentUser().subscribe(user => {
