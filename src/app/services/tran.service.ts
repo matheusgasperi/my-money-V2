@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentReference , QuerySnapshot,} from '@angular/fire/compat/firestore';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -38,10 +38,17 @@ export class TransactionService {
     return this.afs.collection<Tran>(`users/${userId}/transactions`).valueChanges({ idField: 'id' });
   }
 
-  async createTransaction(transaction: Tran): Promise<DocumentReference> {
-    const user = await this.authService.getCurrentUser().toPromise();
-    return this.afs.collection(`users/${user.uid}/transactions`).add(transaction);
+  async createTransaction(transaction: Tran): Promise<DocumentReference<firebase.firestore.DocumentData>> {
+    const userId = firebase.auth().currentUser?.uid;
+    if (!userId) {
+      throw new Error('User not authenticated');
+    }
+
+    const transactionCollection = this.afs.collection(`users/${userId}/transactions`);
+    const transactionRef = await transactionCollection.add(transaction);
+    return transactionRef;
   }
+
 
   editTransaction(transaction: Tran): Promise<void> {
     return this.transactionsCollection.doc(transaction.id).update(transaction);

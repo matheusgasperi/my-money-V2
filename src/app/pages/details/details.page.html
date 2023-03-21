@@ -13,8 +13,8 @@
       <ion-item>
         <ion-label>Tipo de Transação</ion-label>
         <ion-select formControlName="type">
-          <ion-select-option value="income">Ganho</ion-select-option>
-          <ion-select-option value="expense">Gasto</ion-select-option>
+          <ion-select-option value="income">Receita</ion-select-option>
+          <ion-select-option value="expense">Despesa</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
@@ -42,5 +42,6 @@
     <ion-button expand="block" (click)="addTransaction()">
       Salvar Transação
     </ion-button>
+    <ion-button expand="block" (click)="onSubmit()">Submit</ion-button>
   </ion-toolbar>
 </ion-footer>

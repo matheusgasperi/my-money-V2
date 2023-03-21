@@ -43,12 +43,16 @@ export class DetailsPage implements OnInit {
   }
 
   async addTransaction() {
+    console.log('addTransaction');
     const newTransaction = {
       ...this.transactionForm.value,
       date: new Date(this.transactionForm.value.date).getTime(),
     };
     try {
+      console.log('Chamando createTransaction');
       await this.transactionService.createTransaction(newTransaction);
+      console.log('Transaction criada com sucesso');
+
       this.navController.navigateBack('/teste');
     } catch (error) {
       console.error(error);
@@ -70,19 +74,21 @@ export class DetailsPage implements OnInit {
       console.log(error);
     }
   }
-
-  async updateTransaction() {
-    const updatedTransaction = {
-      ...this.transactionForm.value,
-      date: new Date(this.transactionForm.value.date).getTime(),
-      id: this.transactionId,
-    };
-    try {
-      await this.transactionService.editTransaction(updatedTransaction);
-      this.navController.navigateBack('/teste');
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  onSubmit() {
+    console.log(this.transactionForm.value);
+}
+  // async updateTransaction() {
+  //   const updatedTransaction = {
+  //     ...this.transactionForm.value,
+  //     date: new Date(this.transactionForm.value.date).getTime(),
+  //     id: this.transactionId,
+  //   };
+  //   try {
+  //     await this.transactionService.editTransaction(updatedTransaction);
+  //     this.navController.navigateBack('/teste');
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
 }
