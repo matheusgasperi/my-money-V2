@@ -36,7 +36,7 @@ export class DetailsPage implements OnInit {
     this.transactionForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      type: ['expense', Validators.required],
+      type: ['gasto', Validators.required],
       amount: [0, Validators.required],
       date: [new Date().toISOString(), Validators.required]
     });
@@ -77,18 +77,18 @@ export class DetailsPage implements OnInit {
   onSubmit() {
     console.log(this.transactionForm.value);
 }
-  // async updateTransaction() {
-  //   const updatedTransaction = {
-  //     ...this.transactionForm.value,
-  //     date: new Date(this.transactionForm.value.date).getTime(),
-  //     id: this.transactionId,
-  //   };
-  //   try {
-  //     await this.transactionService.editTransaction(updatedTransaction);
-  //     this.navController.navigateBack('/teste');
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
+  async updateTransaction() {
+    const updatedTransaction = {
+      ...this.transactionForm.value,
+      date: new Date(this.transactionForm.value.date).getTime(),
+      id: this.transactionId,
+    };
+    try {
+      await this.transactionService.editTransaction(updatedTransaction);
+      this.navController.navigateBack('/teste');
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
 }

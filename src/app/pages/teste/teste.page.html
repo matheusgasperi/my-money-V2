@@ -18,7 +18,7 @@
      <h1 class="ion-padding">Transações Realizadas</h1>
      <div class="lista">
 
-      <ion-list *ngIf="transactions$ as transactions">
+      <!-- <ion-list *ngIf="transaction$ as transactions$">
         <ion-item *ngFor="let item of [0, 1, 2]">
 
           <ion-label>
@@ -33,8 +33,9 @@
             </p>
           </ion-label>
         </ion-item>
-      </ion-list>
-    <ion-item-sliding *ngFor="let transaction of transactions$ | async">
+      </ion-list> -->
+
+    <ion-item-sliding *ngFor="let transaction of transaction$ | async">
       <ion-item button [routerLink]="['/details', transaction.id]">
 
         <ion-label>
@@ -48,7 +49,7 @@
 
       <ion-item-options side="end">
         <ion-item-option color="danger" >
-          <ion-icon slot="top" name="trash"></ion-icon>
+          <ion-icon slot="top" (click)="deleteTransaction(transactionId)" name="trash"></ion-icon>
           Excluir
         </ion-item-option>
       </ion-item-options>

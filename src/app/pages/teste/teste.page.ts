@@ -13,7 +13,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class TestePage implements OnInit {
   userName: string;
-  transactions$: Observable<Tran[]>;
+  transaction$: Observable<Tran[]>;
   userId: string;
   transactionId: string;
   constructor(
@@ -35,7 +35,7 @@ export class TestePage implements OnInit {
     });
 
     // Obtém as transações do usuário
-    this.transactions$ = this.transactionService.getTransactions(this.userId);
+    this.transaction$ = this.transactionService.getTransactions(this.userId);
   }
 
   // Redireciona para a página de adição de transações
@@ -53,7 +53,7 @@ export class TestePage implements OnInit {
     this.transactionService.deleteTransaction(transactionId);
   }
 
-  async logout(): Promise<void> {
-    return this.afAuth.signOut();
-  }
+  logout() {
+    this.authService.logout();
+}
 }

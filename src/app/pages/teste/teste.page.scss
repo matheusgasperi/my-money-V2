@@ -8,6 +8,9 @@ ion-title{
 ion-list{
 
 }
+.list-container {
+  height: 100%;
+}
 
 .icone{
   ion-img {
@@ -45,10 +48,6 @@ ion-list{
 
 }
 
-ion-list{
-  //background-color:#f6e9f7
-
-}
 
 p.gasto{
   color: red;
@@ -61,11 +60,7 @@ p.amount{
 font-weight: 700;
 }
 
-ion-label{
- //background-color:#f1f3f7;
 
-
-}
 
 ion-item-option{
 
