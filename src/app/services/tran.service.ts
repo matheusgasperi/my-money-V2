@@ -60,7 +60,9 @@ export class TransactionService {
   }
 
   deleteTransaction(transactionId: string): Promise<void> {
-    return this.transactionsCollection.doc(transactionId).delete();
+    return this.transactionsCollection.doc(transactionId).delete().catch(error => {
+      console.log('Erro ao excluir transação: ', error);
+    });
   }
 
   async getUserId(): Promise<string> {

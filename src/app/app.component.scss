@@ -3,9 +3,7 @@
 .menu-header-bg {
   height: 180px;
   width: 350px;
-  background-color: #7590d6 ;
-  background: linear-gradient(90deg, #7590d6 0%, #4d71d7 100%);
-  box-shadow: 0px 1px 10px rgba(98, 140, 255, 0.5);
+  background-color: #7972e6 ;
   transform: rotate(-15deg);
   border-radius: 10px 10px 10px 50px;
   margin-left: -18px;
@@ -24,7 +22,7 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 7px solid #5e7ccc;
+    border: 7px solid #7972e6;
     margin-right: 14px;
   }
 
@@ -45,10 +43,10 @@
 
     ion-icon {
       margin-right: 20px;
-      color: #86979f;
+      color: #7972e6;
     }
   }
 ion-button {
-  size: 30px;
+  size: 20px;
 }
 }

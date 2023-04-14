@@ -26,6 +26,8 @@ export class DetailsPage implements OnInit {
       title: ['', Validators.required],
       description: [''],
       amount: ['', Validators.required],
+      createdAt: ['', Validators.required],
+
     });
   }
 
@@ -39,6 +41,8 @@ export class DetailsPage implements OnInit {
           title: transaction.title,
           description: transaction.description,
           amount: transaction.amount,
+
+
         });
       });
     }
@@ -58,10 +62,6 @@ export class DetailsPage implements OnInit {
     }
   }
 
-  deleteTransaction() {
-    this.transactionService.deleteTransaction(this.transactionId).then(() => {
-      this.router.navigateByUrl('/teste');
-    });
-  }
+
 }
 

@@ -1,13 +1,9 @@
-ion-content{
- // --ion-background-color:#f1f3f7;
-}
+
 ion-title{
   text-align: center;
 }
 
-ion-list{
 
-}
 .list-container {
   height: 100%;
 }
@@ -47,7 +43,13 @@ ion-list{
 
 
 }
-
+ion-skeleton-text {
+  margin-top: px;
+  height: 45;
+  --border-radius: 99px;
+  --background: #7972e6;
+  --background-rgb: 188, 0, 255;
+}
 
 p.gasto{
   color: red;

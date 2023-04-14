@@ -3,22 +3,27 @@
     <ion-content>
       <div class="menu-header-bg"></div>
       <div class="header-content">
-        <img src="/assets/avat.png" alt="">
+
         <ion-label>
-          <h2>Matheus</h2>
+          <h2>{{ userName }}</h2>
         </ion-label>
       </div>
 
       <ion-list class="menu-items" lines="none">
         <ion-menu-toggle>
         <ion-item routerLink="/perfil">
-          <ion-icon name="person-outline"></ion-icon>Perfil
+          <ion-icon name="person"></ion-icon>Perfil
         </ion-item>
       </ion-menu-toggle>
       <ion-menu-toggle>
          <ion-item>
-          <ion-icon name="alert-circle-outline"></ion-icon>Sobre
+          <ion-icon name="alert-circle"></ion-icon>Sobre
          </ion-item>
+              <ion-item>
+        <ion-button color="danger" expand="block" (click)="confirmLogout()" >
+        <ion-icon name="exit-outline"></ion-icon>Sair
+      </ion-button>
+      </ion-item>
         </ion-menu-toggle>
 
       </ion-list>

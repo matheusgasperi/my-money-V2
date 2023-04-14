@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
 import { UserCredential } from 'firebase/auth';
 import { Observable } from 'rxjs';
 import { User } from '../interfaces/user';
@@ -9,9 +10,8 @@ import { User } from '../interfaces/user';
   providedIn: 'root'
 })
 export class AuthService {
-  router: any;
 
-  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) { }
+  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore, private router: Router) { }
 
   // Registro de usuário
   async register(user: User, password: string): Promise<void> {
