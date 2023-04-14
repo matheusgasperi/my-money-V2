@@ -9,6 +9,7 @@ import { User } from '../interfaces/user';
   providedIn: 'root'
 })
 export class AuthService {
+  router: any;
 
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) { }
 
@@ -33,9 +34,11 @@ export class AuthService {
     return currentUser.uid;
   }
   // Logout de usuário
-  async logout(): Promise<void> {
-    return this.afAuth.signOut();
-  }
+  logout() {
+    this.afAuth.signOut().then(()=> {
+      this.router.navigate(['/welcome']);
+    });
+   }
 
   // Retorna o usuário atualmente autenticado
   getCurrentUser() {

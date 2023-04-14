@@ -38,6 +38,11 @@ export class TransactionService {
     return this.afs.collection<Tran>(`users/${userId}/transactions`).valueChanges({ idField: 'id' });
   }
 
+  getTransaction(transactionId: string): Observable<Tran> {
+    return this.transactionsCollection.doc<Tran>(transactionId).valueChanges();
+  }
+
+
   async createTransaction(transaction: Tran): Promise<DocumentReference<firebase.firestore.DocumentData>> {
     const userId = firebase.auth().currentUser?.uid;
     if (!userId) {
@@ -50,8 +55,8 @@ export class TransactionService {
   }
 
 
-  editTransaction(transaction: Tran): Promise<void> {
-    return this.transactionsCollection.doc(transaction.id).update(transaction);
+  updateTran(id: string, tran: Tran) {
+    return this.transactionsCollection.doc<Tran>(id).update(tran);
   }
 
   deleteTransaction(transactionId: string): Promise<void> {

@@ -4,7 +4,7 @@ export interface Tran {
   title: string;
   description?: string;
   amount: number;
-  createdAt: number;
+  createdAt?: number;
   userId: string | Promise<string>;
 
 }

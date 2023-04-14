@@ -29,10 +29,7 @@
         <ion-label position="stacked">Valor</ion-label>
         <ion-input type="number" formControlName="amount" placeholder="Valor"></ion-input>
       </ion-item>
-      <ion-item>
-        <ion-label>Data</ion-label>
-        <ion-datetime display-format="DD/MM/YYYY" formControlName="date"></ion-datetime>
-      </ion-item>
+
     </ion-list>
   </form>
 </ion-content>
@@ -40,7 +37,7 @@
 <ion-footer>
   <ion-toolbar>
     <ion-button expand="block" (click)="addTransaction()">
-      Salvar Transação
+      {{ transactionId ? 'Atualizar Transação' : 'Salvar Transação' }}
     </ion-button>
   </ion-toolbar>
 </ion-footer>

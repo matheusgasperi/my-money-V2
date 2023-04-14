@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { TransactionService } from 'src/app/services/tran.service';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-teste',
@@ -16,11 +17,14 @@ export class TestePage implements OnInit {
   transaction$: Observable<Tran[]>;
   userId: string;
   transactionId: string;
+  loading: any;
   constructor(
     private authService: AuthService,
     private transactionService: TransactionService,
     private router: Router,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController
   ) { }
 
   async ngOnInit() {
@@ -48,12 +52,30 @@ export class TestePage implements OnInit {
     this.router.navigate(['/edit-transaction', transactionId]);
   }
 
-  // Deleta uma transação
-  deleteTransaction(transactionId: string) {
-    this.transactionService.deleteTransaction(transactionId);
+  deleteTransaction() {
+    this.transactionService.deleteTransaction(this.transactionId).then(() => {
+      this.router.navigateByUrl('/teste');
+    });
   }
 
-  logout() {
-    this.authService.logout();
-}
+  async presentToast(message: string) {
+    const toast = await this.toastCtrl.create({ message, duration: 2000 });
+    toast.present();
+  }
+
+  async logout() {
+    await this.presentLoading();
+
+    try {
+      await this.authService.logout();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loading.dismiss();
+    }
+  }
+  async presentLoading() {
+    this.loading = await this.loadingCtrl.create({ message: 'Aguarde...' });
+    return this.loading.present();
+  }
 }
