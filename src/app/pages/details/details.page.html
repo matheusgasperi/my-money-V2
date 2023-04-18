@@ -30,8 +30,15 @@
         <ion-input type="number" formControlName="amount" placeholder="Valor"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label >Data</ion-label>
-        <ion-datetime color="purple" displayFormat="DD/MM/YYYY" formControlName="createdAt"></ion-datetime>
+        <ion-label position="stacked">Data</ion-label>
+        <ion-datetime
+          formControlName="createdAt"
+          displayFormat="DD/MM/YYYY"
+          pickerFormat="DD MMMM YYYY"
+          cancelText="Cancelar"
+          doneText="OK"
+        >
+        </ion-datetime>
       </ion-item>
 
 

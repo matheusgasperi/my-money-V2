@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Profile Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #profileForm="ngForm" (ngSubmit)="saveProfile()">
+    <ion-list>
+      <ion-item>
+        <ion-label>Profile Picture</ion-label>
+        <ion-avatar slot="end">
+          <img [src]="profileImage" />
+        </ion-avatar>
+        <ion-button expand="block" (click)="selectImage()">Select Image</ion-button>
+      </ion-item>
+    </ion-list>
+    <ion-button type="submit" (click)="saveProfile()" routerLink="/teste" expand="block">Save Profile</ion-button>
+  </form>
+</ion-content>

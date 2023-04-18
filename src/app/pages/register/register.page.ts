@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat/app';
 
 
 
@@ -31,15 +32,47 @@ export class RegisterPage {
   passwordMatch: boolean;
 
   constructor(private authService: AuthService,
-     private router: Router
+     private router: Router, private afAuth: AngularFireAuth, private afs: AngularFirestore
      ) {}
 
   async register() {
     const user: User = { name: this.name, email: this.email };
     await this.authService.register(user, this.password);
     await this.router.navigate(['/teste']);
-
 }
+
+async registerWithGoogle() {
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const credential = await this.afAuth.signInWithPopup(provider);
+    const uid = credential.user.uid;
+    const userData = { uid, email: credential.user.email, name: credential.user.displayName };
+    await this.afs.doc(`users/${uid}`).set(userData);
+    await this.router.navigate(['/teste']);
+  } catch (error) {
+    console.log('Erro ao autenticar com o Google:', error);
+  }
+}
+
+async registerWithFacebook() {
+  try {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    const credential = await this.afAuth.signInWithPopup(provider);
+    const uid = credential.user.uid;
+    const userData = { uid, email: credential.user.email, name: credential.user.displayName };
+    await this.afs.doc(`users/${uid}`).set(userData);
+    await this.router.navigate(['/teste']);
+  } catch (error) {
+    console.log('Erro ao autenticar com o Facebook:', error);
+  }
+}
+
+
+  async loginWithFacebook(): Promise<void> {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    await this.afAuth.signInWithPopup(provider);
+  }
+
   checkPassword() {
     this.passwordMatch = this.password === this.confirmPassword;
   }

@@ -11,8 +11,10 @@
 
 
   <ion-list>
+
     <div class="icone">
-      <h1>{{userName}}</h1>
+
+      <!-- <h1>{{userName}}</h1> -->
     </div>
     <div class="main-div ion-padding">
      <h1 class="ion-padding">Transações Realizadas</h1>
@@ -41,7 +43,7 @@
           <ion-label>
             {{ transaction.title }}
             <p [ngClass]="{gasto: transaction.type === 'gasto', ganho: transaction.type === 'ganho'}">{{transaction.description}}</p>
-            <p>{{ transaction.createdAt | date: 'short' }}</p>
+            <p>{{ transaction.createdAt | date: 'dd/MM/yy HH:mm ' }}</p>
           </ion-label>
 
           <p class="valor" [ngClass]="{gasto: transaction.type === 'gasto', ganho: transaction.type === 'ganho'}">R${{transaction.amount}}</p>

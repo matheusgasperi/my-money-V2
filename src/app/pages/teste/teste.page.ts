@@ -6,6 +6,7 @@ import { TransactionService } from 'src/app/services/tran.service';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-teste',
@@ -18,7 +19,7 @@ export class TestePage implements OnInit {
   userId: string;
   transactionId: string;
   loading: any;
-  dummyTransactions = new Array(3).fill(null); // c
+  dummyTransactions = new Array(3).fill(null);
 
 
   constructor(
@@ -28,7 +29,8 @@ export class TestePage implements OnInit {
     private afAuth: AngularFireAuth,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private storage: AngularFireStorage
   ) {
     setTimeout(() => {
       this.loading = false; // altera a variável loading após 3 segundos
