@@ -1,3 +1,4 @@
+import { AlertController } from '@ionic/angular';
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 /* eslint-disable eqeqeq */
 /* eslint-disable object-shorthand */
@@ -14,6 +15,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { ResetpasswordPage } from '../resetpassword/resetpassword.page';
+
 
 
 @Component({
@@ -32,6 +35,7 @@ export class LoginPage implements OnInit {
   rememberMe: boolean = false;
 
   constructor(
+    private alertCtrl: AlertController,
     private afauth: AngularFireAuth,
     private afs: AngularFirestore,
     private loadingCrtl: LoadingController,
@@ -55,13 +59,7 @@ export class LoginPage implements OnInit {
       this.rememberMe = true;
     }
   }
-  async openForgotPassword() {
-    const modal = await this.modalCtrl.create({
-      component: ForgotPasswordModalComponent,
-      cssClass: 'my-custom-class'
-    });
-    return await modal.present();
-  }
+
 
   saveCredentials(email: string, password: string) {
     // Armazena as credenciais no LocalStorage
@@ -69,9 +67,20 @@ export class LoginPage implements OnInit {
     localStorage.setItem('password', password);
   }
 
+  async openForgotPassword() {
+    const modal = await this.modalCtrl.create({
+      component: ResetpasswordPage,
+      animated: true,
+      mode: 'ios',
+      backdropDismiss: false,
+      cssClass: 'modal-reset',
+    });
+    return await modal.present();
+  }
+
   async login() {
     try {
-      await this.authService.login(this.email, this.password);
+      const user = await this.authService.login(this.email, this.password);
       this.router.navigate(['/teste']);
 
       // Salva as credenciais do usuário localmente se o checkbox "Lembrar-me" estiver marcado
@@ -81,9 +90,10 @@ export class LoginPage implements OnInit {
         localStorage.removeItem('email');
         localStorage.removeItem('password');
       }
-    } catch (error) {
-      console.error(error);
-    }
+
+  } catch (error) {
+    console.error(error);
+  }
 
     const loading = await this.loadingCrtl.create({
       message: 'Logando..',

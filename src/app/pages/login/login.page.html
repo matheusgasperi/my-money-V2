@@ -29,30 +29,13 @@
         </ion-item>
         <ion-item class="lemb">
           <ion-label >Lembrar-me</ion-label>
-          <ion-checkbox [(ngModel)]="rememberMe"></ion-checkbox>
+          <ion-toggle [(ngModel)]="rememberMe"></ion-toggle>
         </ion-item>
 
-        <span class="forgot"(click)="openForgotPassword()">Esqueci minha senha</span>
+        <ion-text class="forgot" (click)="openForgotPassword()" >Esqueci minha senha</ion-text>
         <ion-button expand="block" (click)="login()" >Entrar</ion-button>
       </ion-card-content>
     </ion-card>
-    <ion-modal>
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Recuperar senha</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="dismiss()">Fechar</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content>
-        <ion-item>
-          <ion-label position="stacked">E-mail</ion-label>
-          <ion-input type="email" [(ngModel)]="email"></ion-input>
-        </ion-item>
-        <ion-button expand="block" (click)="resetPassword()">Enviar e-mail de recuperação</ion-button>
-      </ion-content>
-    </ion-modal>
 
     <div class="line-text">
       <span class="lines"></span>

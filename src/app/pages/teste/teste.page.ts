@@ -21,7 +21,6 @@ export class TestePage implements OnInit {
   loading: any;
   dummyTransactions = new Array(3).fill(null);
 
-
   constructor(
     private authService: AuthService,
     private transactionService: TransactionService,
@@ -37,7 +36,6 @@ export class TestePage implements OnInit {
     }, 3000);
   }
 
-
   async ngOnInit() {
     // Obtém o ID do usuário atual
     this.userId = await this.authService.getUserId();
@@ -45,6 +43,7 @@ export class TestePage implements OnInit {
     // Obtém o nome do usuário
     this.transactionService.getUserName(this.userId).then((userName) => {
       this.userName = userName;
+      this.presentWelcomeToast();
     }).catch((error) => {
       console.log(error);
     });
@@ -98,10 +97,17 @@ export class TestePage implements OnInit {
     toast.present();
   }
 
-
-
   async presentLoading() {
     this.loading = await this.loadingCtrl.create({ message: 'Aguarde...' });
     return this.loading.present();
   }
+
+  async presentWelcomeToast() {
+    const toast = await this.toastCtrl.create({
+      message: `Seja bem-vindo, ${this.userName}!`,
+      duration: 3000,
+    });
+    toast.present();
+  }
+
 }

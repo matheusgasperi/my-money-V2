@@ -10,9 +10,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire/compat' ;
 import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth' ;
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore' ;
-import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { IonicStorageModule } from '@ionic/storage-angular';
+
+
 
 // services
 import { AuthService } from './services/auth.service';
@@ -23,10 +22,8 @@ import { AuthService } from './services/auth.service';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFireStorageModule
 
   ],
   providers: [
