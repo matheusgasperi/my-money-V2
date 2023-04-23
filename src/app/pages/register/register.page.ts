@@ -1,3 +1,4 @@
+import { AlertController } from '@ionic/angular';
 /* eslint-disable eqeqeq */
 /* eslint-disable object-shorthand */
 /* eslint-disable @typescript-eslint/semi */
@@ -9,11 +10,11 @@ import { Router } from '@angular/router';
 import { IonSlides, LoadingController, ToastController } from '@ionic/angular';
 import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
+
 
 
 
@@ -30,16 +31,44 @@ export class RegisterPage {
   password: string;
   confirmPassword: string;
   passwordMatch: boolean;
+  errorMsg: string;
 
   constructor(private authService: AuthService,
-     private router: Router, private afAuth: AngularFireAuth, private afs: AngularFirestore
+     private router: Router,
+      private afAuth: AngularFireAuth,
+       private afs: AngularFirestore,
+       private alertCtrl: AlertController
      ) {}
 
-  async register() {
-    const user: User = { name: this.name, email: this.email };
-    await this.authService.register(user, this.password);
-    await this.router.navigate(['/teste']);
-}
+     async register() {
+      const user: User = { name: this.name, email: this.email };
+      try {
+        await this.authService.register(user, this.password);
+        await this.router.navigate(['/teste']);
+      } catch (error) {
+        let errorMessage: string;
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            errorMessage = 'O e-mail já está em uso.';
+            break;
+          case 'auth/invalid-email':
+            errorMessage = 'O e-mail é inválido.';
+            break;
+          case 'auth/weak-password':
+            errorMessage = 'Senha fraca.';
+            break;
+          default:
+            errorMessage = 'Ocorreu um erro ao cadastrar.';
+            break;
+        }
+        const alert = await this.alertCtrl.create({
+          header: 'Erro',
+          message: errorMessage,
+          buttons: ['OK']
+        });
+        await alert.present();
+      }
+    }
 
 async registerWithGoogle() {
   try {

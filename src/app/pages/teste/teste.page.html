@@ -9,61 +9,57 @@
 
 <ion-content>
 
-
   <ion-list>
-
     <div class="icone">
+      <ion-img src="assets/i3.png"></ion-img>
 
-      <!-- <h1>{{userName}}</h1> -->
-    </div>
-    <div class="main-div ion-padding">
-     <h1 class="ion-padding">Transações Realizadas</h1>
+      <h1>{{userName}}</h1>
 
-     <div class="lista">
-      <div *ngIf="!(transaction$ | async)?.length">
-        <ion-list>
+      <div class="main-div ion-padding">
+        <h1 class="ion-padding">Transações Realizadas</h1>
+        <ion-icon class="eye" name="eye" (click)="showTransactions = !showTransactions">{{ showTransactions ? 'Ocultar transações' : 'Mostrar transações' }}</ion-icon>
+        <div *ngIf="!showTransactions">
+          <ion-list>
+            <ion-item *ngFor="let transaction of [1, 2,]">
+              <ion-thumbnail slot="start">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-thumbnail>
+              <ion-label>
+                <h3><ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text></h3>
+                <p><ion-skeleton-text animated style="width: 60%;"></ion-skeleton-text></p>
+                <p><ion-skeleton-text animated style="width: 30%;"></ion-skeleton-text></p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
 
-          <ion-item *ngFor="let transaction of [1, 2,]">
-            <ion-thumbnail slot="start">
-              <ion-skeleton-text animated></ion-skeleton-text>
-            </ion-thumbnail>
-            <ion-label>
-              <h3><ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text></h3>
-              <p><ion-skeleton-text animated style="width: 60%;"></ion-skeleton-text></p>
-              <p><ion-skeleton-text animated style="width: 30%;"></ion-skeleton-text></p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
+        <div *ngIf="showTransactions">
+          <ion-item-sliding *ngFor="let transaction of transaction$ | async">
+            <ion-item button [routerLink]="['/details', transaction.id]">
+              <ion-label>
+                {{ transaction.title }}
+                <p [ngClass]="{gasto: transaction.type === 'gasto', ganho: transaction.type === 'ganho'}">{{transaction.description}}</p>
+                <p>{{ transaction.createdAt | date: 'dd/MM/yy HH:mm ' }}</p>
+              </ion-label>
+
+              <p class="valor" [ngClass]="{gasto: transaction.type === 'gasto', ganho: transaction.type === 'ganho'}">R${{transaction.amount}}</p>
+            </ion-item>
+
+            <ion-item-options side="end">
+              <ion-item-option color="danger">
+                <ion-icon slot="top" (click)="deleteTransaction(transaction.id)" name="trash"></ion-icon>
+                Excluir
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </div>
       </div>
 
+      <ion-fab-button color="primary">
+        <ion-icon name="add-outline" routerLink="/details"></ion-icon>
+      </ion-fab-button>
 
-      <ion-item-sliding *ngFor="let transaction of transaction$ | async">
-        <ion-item button [routerLink]="['/details', transaction.id]">
 
-          <ion-label>
-            {{ transaction.title }}
-            <p [ngClass]="{gasto: transaction.type === 'gasto', ganho: transaction.type === 'ganho'}">{{transaction.description}}</p>
-            <p>{{ transaction.createdAt | date: 'dd/MM/yy HH:mm ' }}</p>
-          </ion-label>
-
-          <p class="valor" [ngClass]="{gasto: transaction.type === 'gasto', ganho: transaction.type === 'ganho'}">R${{transaction.amount}}</p>
-        </ion-item>
-
-        <ion-item-options side="end">
-          <ion-item-option color="danger" >
-            <ion-icon slot="top" (click)="deleteTransaction(transaction.id)" name="trash"></ion-icon>
-            Excluir
-          </ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
     </div>
-
-
-
-
- <ion-fab-button color="primary">
-  <ion-icon name="add-outline" routerLink="/details"></ion-icon>
-</ion-fab-button>
-
-
-
+  </ion-list>
+</ion-content>

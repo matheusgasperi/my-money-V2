@@ -1,48 +1,59 @@
 
 ion-title{
-  text-align: center;
-}
-
-
-.list-container {
-  height: 100%;
+  position: fixed;
+  color: #7972e6;
+  right: 28%;
+  font-size: 14px;
 }
 
 .icone{
   ion-img {
     position: absolute;
-    top: 12px;
-    right: 40%;
-    left: 36%;
-    height: 94px;
-    width: 94px;
+    top: 10%;
+    right: 42%;
+    height: 52px;
+    width: 52px;
   }
 
   h1{
-    margin-top: 92px;
-    font-size: 1.1rem;
+    color: #7972e6;
+    margin-top: 106px;
+    font-size: 14px;
     text-align: center;
     margin-bottom: 0;
 
   }
-
-
 }
+
+.list-container {
+  height: 100%;
+}
+
+
 
 .main-div{
   h1{
-    //background-color:#f1f3f7;
     border-radius: 4;
     color: #585858;
     font-size: 0.80rem;
-    text-align: end;
-    margin-top: 15px;
-    margin-bottom: 0px;
+    text-align: start;
+    margin-top: 58px;
+    margin-bottom: -34px;
 
   }
 
+  .eye {
 
+    margin-bottom: 0px;
+    margin-left: 215px;
+    color: #585858;
+    font-size: 22px;
+
+  }
 }
+
+
+
 ion-skeleton-text {
   margin-top: px;
   height: 45;
@@ -74,7 +85,7 @@ ion-item-option{
 
 ion-button{
   position: fixed;
-top: 90%;
+top: 20%;
 bottom: 0;
 }
 
@@ -84,3 +95,4 @@ ion-fab-button{
  left: 75%;
 
 }
+

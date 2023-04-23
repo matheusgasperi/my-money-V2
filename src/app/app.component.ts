@@ -59,6 +59,15 @@ export class AppComponent implements OnInit {
     await alert.present();
   }
 
+   async about() {
+      const alert = await this.alertCtrl.create({
+        message: 'Desenvolvido por Matheus Sutil de Gasperi',
+        buttons: ['OK']
+      });
+      await alert.present();
+
+    }
+
   async logout() {
     await this.presentLoading();
 

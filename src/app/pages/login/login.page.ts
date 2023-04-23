@@ -91,26 +91,39 @@ export class LoginPage implements OnInit {
         localStorage.removeItem('password');
       }
 
-  } catch (error) {
-    console.error(error);
-  }
+      const loading = await this.loadingCrtl.create({
+        message: 'Logando..',
+        spinner: 'crescent',
+        showBackdrop: true,
+      });
 
-    const loading = await this.loadingCrtl.create({
-      message: 'Logando..',
-      spinner: 'crescent',
-      showBackdrop: true,
-    });
+      loading.present();
 
-   loading.present();
+      this.authService.login(this.email, this.password)
+        .then(() => {
+          loading.dismiss();
+        })
 
-    this.authService.login(this.email, this.password)
-      .then(() => {
-        loading.dismiss();
-      })
-      .catch((error) => {
-        loading.dismiss();
-        this.toast(error.message, 'danger');
-      })
+    } catch (error) {
+      let errorMessage: string;
+      switch (error.code) {
+        case 'auth/user-not-found':
+          errorMessage = 'Usuário não encontrado.';
+          break;
+        case 'auth/wrong-password':
+          errorMessage = 'Senha incorreta.';
+          break;
+        default:
+          errorMessage = 'Ocorreu um erro. Por favor, tente novamente mais tarde';
+          break;
+      }
+      const alert = await this.alertCtrl.create({
+        header: 'Erro',
+        message: errorMessage,
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
   }
 
 

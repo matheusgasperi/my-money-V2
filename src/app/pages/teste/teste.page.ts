@@ -20,6 +20,7 @@ export class TestePage implements OnInit {
   transactionId: string;
   loading: any;
   dummyTransactions = new Array(3).fill(null);
+  showTransactions = false;
 
   constructor(
     private authService: AuthService,
@@ -32,7 +33,7 @@ export class TestePage implements OnInit {
     private storage: AngularFireStorage
   ) {
     setTimeout(() => {
-      this.loading = false; // altera a variável loading após 3 segundos
+      this.loading = false;
     }, 3000);
   }
 
@@ -50,6 +51,9 @@ export class TestePage implements OnInit {
 
     // Obtém as transações do usuário
     this.transaction$ = this.transactionService.getTransactions(this.userId);
+  }
+  toggleTransactions() {
+    this.showTransactions = !this.showTransactions;
   }
 
   // Redireciona para a página de adição de transações

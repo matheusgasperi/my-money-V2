@@ -1,2 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Perfil
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
 
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      Editar informações
+    </ion-card-header>
+    <ion-card-content>
+      <form #editForm="ngForm" (ngSubmit)="onSubmit(editForm)">
+        <ion-item>
+          <ion-label position="stacked">Nome:</ion-label>
+          <ion-input type="text" [(ngModel)]="userName" name="userName"></ion-input>
+        </ion-item>
 
+        <ion-item>
+          <ion-label position="stacked">Senha:</ion-label>
+          <ion-input type="password" [(ngModel)]="password" name="password"></ion-input>
+        </ion-item>
+
+        <ion-button type="submit" expand="block">Salvar</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

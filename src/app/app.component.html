@@ -5,7 +5,7 @@
       <div class="header-content">
 
         <ion-label>
-          <h2>{{ userName }}</h2>
+          <h1>Menu</h1>
         </ion-label>
       </div>
 
@@ -17,7 +17,7 @@
       </ion-menu-toggle>
       <ion-menu-toggle>
          <ion-item>
-          <ion-icon name="alert-circle"></ion-icon>Sobre
+          <ion-icon name="alert-circle" (click)="about()" ></ion-icon>Sobre
          </ion-item>
               <ion-item>
         <ion-button color="danger" expand="block" (click)="confirmLogout()" >
